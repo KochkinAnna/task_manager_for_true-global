@@ -20,6 +20,29 @@ async function bootstrap() {
 
   app.enableCors();
 
-  await app.listen(5500);
+  const maxRetryAttempts = 5;
+  let currentAttempt = 1;
+  let dbConnected = false;
+
+  while (currentAttempt <= maxRetryAttempts && !dbConnected) {
+    try {
+      await app.listen(5500);
+      dbConnected = true;
+    } catch (error) {
+      console.log(
+        `Database connection failed (attempt ${currentAttempt} of ${maxRetryAttempts}), retrying...`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      currentAttempt++;
+    }
+  }
+
+  if (dbConnected) {
+    console.log('Server has started on PORT 5500');
+  } else {
+    console.log('Failed to connect to the database. Exiting...');
+    process.exit(1);
+  }
 }
+
 bootstrap();
