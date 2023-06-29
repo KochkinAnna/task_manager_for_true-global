@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "5555:5500"
+    volumes:
+      - ./dist:/app
+      - /app/node_modules
+    command: >
+      sh -c "node --watch app.js"
