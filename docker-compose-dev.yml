@@ -12,4 +12,4 @@ services:
       - ./dist:/app
       - /app/node_modules
     command: >
-      sh -c "node --watch app.js"
+      sh -c "node --watch main.js"
