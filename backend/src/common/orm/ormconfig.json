@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "admin",
+  "password": "admin",
+  "database": "tasks_manager_for_true_global",
+  "entities": ["src/common/orm/entities/**/*.entity{.ts,.js}"],
+  "migrations": ["src/common/orm/migrations/**/*.ts"],
+  "cli": {
+    "migrationsDir": "src/common/orm/migrations"
+  }
+}

@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Category } from './category.entity';
 import { IsEmail, IsNotEmpty, IsInt, Length } from 'class-validator';
+import { EUserRoles } from '../../enums/userRoles.enum';
 
 @Entity()
 @ApiTags('users')
@@ -31,6 +32,13 @@ export class User {
     message: 'Password must contain a minimum of 4 symbols and a maximum of 10',
   })
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: EUserRoles,
+    default: EUserRoles.user,
+  })
+  role: EUserRoles;
 
   @OneToMany(() => Category, (category) => category.user)
   @ApiProperty({

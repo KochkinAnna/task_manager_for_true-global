@@ -2,24 +2,26 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CategoriesController } from './categories/categories.controller';
 import { CategoriesModule } from './categories/categories.module';
 import { CategoriesService } from './categories/categories.service';
-import { TasksController } from './tasks/tasks.controller';
 import { TasksModule } from './tasks/tasks.module';
 import { TasksService } from './tasks/tasks.service';
-import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './common/entities/user.entity';
-import { Category } from './common/entities/category.entity';
-import { Task } from './common/entities/task.entity';
+import { User } from './common/orm/entities/user.entity';
+import { Category } from './common/orm/entities/category.entity';
+import { Task } from './common/orm/entities/task.entity';
+import { CategoriesResolver } from './categories/categories.resolver';
+import { TasksResolver } from './tasks/tasks.resolver';
+import { UsersResolver } from './users/users.resolver';
+import { GraphQLModule } from '@nestjs/graphql';
 
 @Module({
   imports: [
     CategoriesModule,
     TasksModule,
+    UsersModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -30,14 +32,21 @@ import { Task } from './common/entities/task.entity';
       entities: [User, Category, Task],
       synchronize: true,
     }),
-    UsersModule,
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+      playground: true,
+      uploads: false,
+    }),
   ],
-  controllers: [
-    AppController,
-    CategoriesController,
-    TasksController,
-    UsersController,
+  controllers: [AppController],
+  providers: [
+    AppService,
+    CategoriesService,
+    TasksService,
+    UsersService,
+    CategoriesResolver,
+    TasksResolver,
+    UsersResolver,
   ],
-  providers: [AppService, CategoriesService, TasksService, UsersService],
 })
 export class AppModule {}

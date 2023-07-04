@@ -12,7 +12,7 @@ export class Task {
     description: 'Unique identifier of the task (auto-incremented)',
   })
   @IsNotEmpty({ message: 'Task id cannot be empty' })
-  @IsInt({ message: 'Task id is int' })
+  @IsInt({ message: 'Task id must be an integer' })
   id: number;
 
   @Column()
@@ -22,8 +22,7 @@ export class Task {
   })
   @IsString({ message: 'Task name must be a string' })
   @Length(2, 50, {
-    message:
-      'Task name must contain a minimum of 2 letters and a maximum of 50',
+    message: 'Task name must contain a minimum of 2 letters and a maximum of 50',
   })
   @IsNotEmpty({ message: 'Task name cannot be empty' })
   name: string;
